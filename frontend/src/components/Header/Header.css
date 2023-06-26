@@ -1,0 +1,85 @@
+.topbar {
+  position: fixed;
+  width: 100%;
+  height: 85px;
+  background: rgba(48, 104, 246, 1);
+  display: flex;
+  align-items: center;
+  z-index: 999;
+}
+
+.logo {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  margin-right: auto;
+  padding-left: 20px;
+}
+
+.logo-text {
+  font-family: "Inter", sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  color: #ffffff;
+}
+
+.componen {
+  position: absolute;
+  width: 394px;
+  height: 82px;
+  top: 20%;
+  right: 20px; /* Menggeser elemen ke sebelah kanan topbar */
+  display: flex;
+  justify-content: space-between;
+}
+
+.subcomponen {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
+  height: 50px;
+  background: rgba(0, 0, 0, 0.09);
+  border: 2px solid #ffffff;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.label-text {
+  width: 100%;
+  font-family: "Inter", sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  color: #ffffff;
+}
+
+.logout-button {
+  position: relative;
+  width: 150px;
+  height: 50px;
+  background: rgba(0, 0, 0, 0.09);
+  border: 2px solid #ffffff;
+  border-radius: 10px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-left: 250px;
+}
+
+.logout-button .label-text {
+  font-family: "Inter", sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  color: #ffffff;
+}
+
+.logout-button:hover {
+  background: rgba(0, 0, 0, 0.2);
+}

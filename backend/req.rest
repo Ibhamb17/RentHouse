@@ -1,0 +1,311 @@
+//meminta request data
+GET http://localhost:5000/users/customer/ibham bathsyi hizbullah
+
+###
+//delet property
+DELETE http://localhost:5000/propertys/2
+
+###
+//membuat user admin
+POST http://localhost:5000/users
+Content-Type: application/json
+
+{
+            "fullName": "Ibham Bathsyi",
+            "email": "ibem123@gmail.com",
+            "password": "123456",
+            "confirmPassword":"123456",
+            "role": "admin"
+}
+
+###
+//membuat user dosen
+POST http://localhost:5000/users
+Content-Type: application/json
+
+{
+           "name": "Ibham Bathsyi Hizbullah",
+           "username": "ibhamb",
+            "email": "ibem123@gmail.com",
+            "npm": "dosen12345",
+            "password": "123456",
+            "confPassword":"123456",
+            "alamat": "Ciwastra",
+            "nomor": "085797032653",
+            "role": "owner"
+}
+
+###
+///daftar customer
+POST http://localhost:5000/users
+Content-Type: application/json
+
+{
+  "fullName": "Luthfi",
+  "username": "admin",
+  "email": "admin1@gmail.com",
+  "password": "123456",
+  "confirmPassword":"123456",
+  "address": "Banjaran",
+  "phoneNumber": "08687392138912",
+  "role":"admin"
+}
+###
+///daftar customer
+POST http://localhost:5000/customers
+Content-Type: application/json
+
+{
+  "fullName": "Ibham Bathsyi Hizbullah",
+  "username": "ibhamb",
+  "email": "ibem@gmail.com",
+  "password": "123456",
+  "confirmPassword":"123456",
+  "address": "Banjaran",
+  "phoneNumber": "08687392138912",
+  "dateOfBirth": "1990-01-01",
+  "gender": "Male",
+  "occupation": "Engineer",
+  "identificationNumber": "1234567890"
+}
+###
+///daftar owner
+POST http://localhost:5000/owners
+Content-Type: application/json
+
+{
+ "fullName": "Alip Pandanhi Febrio",
+  "username": "Alip",
+  "email": "alip@gmail.com",
+  "password": "123456",
+  "confirmPassword":"123456",
+  "businessName": "Alip Rental",
+  "businessAddress": "Cipadung",
+  "address": "Soreang",
+  "norekening": "BNI - 021334343",
+  "phoneNumber": "1234567890"
+}
+
+###
+///login
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+    "email": "admin1@gmail.com",
+    "password": "123456"
+}
+//tes add property
+###
+POST http://localhost:5000/propertys
+Content-Type: application/json
+
+{
+  "propertyName": "Kontrakan Minimalis",
+  "propertyAddress": "Cibiru",
+  "propertyDescription": "Lorem Ipsum"
+}
+
+###
+// cek akun
+GET http://localhost:5000/me
+
+###
+// cek logout
+DELETE  http://localhost:5000/logout
+
+
+###
+// buat kontrakan
+POST http://localhost:5000/kontrakan
+Content-Type: application/json
+
+{
+  "namaKontrakan": "Kontrakan 3 alip",
+  "alamatKontrakan": "Jl. Contoh No. 123",
+  "keterangan": "Kontrakan baru dengan fasilitas lengkap",
+  "price": 800000,
+  "availability": true
+}
+###
+//meminta request data
+GET http://localhost:5000/kontrakan
+
+
+###
+//meminta request data kontrakan berdasarkan ownerId
+GET http://localhost:5000/kontrakan/3
+
+###
+//meminta request data kontrakan berdasarkan ownerId
+GET http://localhost:5000/kontrakanowner
+
+###
+//UPDATE KONTRAKAN
+PATCH   http://localhost:5000/kontrakan/3
+Content-Type: application/json
+
+{
+    "namaKontrakan": "Kontrakan 1 Alip",
+    "availability": true
+}
+###
+// DELETE KONTRAKAN
+DELETE http://localhost:5000/kontrakan/7
+
+###
+// ihat KONTRAKAN
+GET  http://localhost:5000/kontrakan/customer/6
+
+###
+///login
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+    "email": "ibem@gmail.com",
+    "password": "123456"
+}
+###
+// cek akun
+GET http://localhost:5000/me
+###
+// cek logout
+DELETE  http://localhost:5000/logout
+###
+/// Booking
+POST http://localhost:5000/bookings
+Content-Type: application/json
+
+{
+  "kontrakanId": 2
+}
+###
+
+###
+///login
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+    "email": "admin1@gmail.com",
+    "password": "123456"
+}
+###
+// cek akun
+GET http://localhost:5000/me
+###
+// cek akun
+GET http://localhost:5000/users
+###
+// cek logout
+DELETE  http://localhost:5000/logout
+
+###
+// cek booking
+GET http://localhost:5000/bookings
+###
+// booking by owner
+GET http://localhost:5000/bookingsbyowner
+
+###
+///
+PATCH http://localhost:5000/bookings/1
+Content-Type: application/json
+
+{
+  "status_booking": "pending"
+}
+###
+///update pembayaran customer
+PATCH  http://localhost:5000/pembayaran/12
+Content-Type: application/json
+
+{
+  "rekeningcustomer": "543543534543",
+  "bukti_pembayaran": "foto.jpg"
+}
+###
+///update pembayaran owner
+PATCH http://localhost:5000/pembayaranowner/12
+Content-Type: application/json
+
+{
+  "status_pembayaran": "confirmed"
+}
+
+###
+///
+POST http://localhost:5000/kontrakan/1/gambar
+Content-Type: application/json
+
+{
+"kontrakanId": 1,
+"namaFile": "gambar1.jpg",
+"pathFile": "https://drive.google.com/file/d/1O0I76x3M5YMt6wRai4L3XpRKZr7NQ5Zn/view?usp=sharing"
+}
+###
+//liat materi
+GET  http://localhost:5000/materis
+
+###
+//tambah materi
+POST http://localhost:5000/materis
+Content-Type: application/json
+
+{
+    "nama_materi" : "Materi 4",
+    "link_materi" : "http://djawdjwaodjawdo.com",
+    "mata_kuliah": "paw",
+    "tenggat_waktu": "2022-12-26"
+}
+
+###
+POST  http:/localhost:5000/jadwal_dosen
+
+
+###
+PATCH  http://localhost:5000/users/45f399a9-5605-4e68-960c-84c12e946a40
+Content-Type: application/json
+
+{
+    "name" : "Ibham Bathsyi",
+    "password": "123456",
+    "confPassword" : "123456"
+}
+
+###
+
+###
+DELETE http://localhost:5000/propertys/
+
+
+    # "name": "Haikal Azhar",
+    # "email": "haikal@gmail.com",
+    # "role":"dosen",
+    # "name" : "",
+
+        #    "name": "Ibham Bathsyi",
+        #     "email": "ibem@gmail.com",
+        #     "nim": "",
+        #     "npm": "npm",
+        #     "password": "123456",
+        #     "confPassword":"123456",
+        #     "alamat": "alamat",
+        #     "dp": "dp",
+        #     "role": "role"
+
+###
+///
+//membuat jadwal dosen
+POST http://localhost:5000/jadwal_dosen
+Content-Type: application/json
+
+{
+           "matakuliah": "ppaw",
+            "kelas": "b",
+            "sks": "2",
+            "ruang": "R408",
+            "hari":"rabu",
+            "waktu": "14.20"
+}
