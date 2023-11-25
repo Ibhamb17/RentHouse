@@ -43,12 +43,25 @@ const getBookingsByOwner = async (req, res) => {
       include: [{ model: Customer }],
     });
 
-    res.json(bookings);
+    // Mengambil data pembayaran berdasarkan bookingId
+    const pembayaranPromises = bookings.map((booking) =>
+      Pembayaran.findOne({ where: { bookingId: booking.id } })
+    );
+    const pembayaranResults = await Promise.all(pembayaranPromises);
+
+    // Menggabungkan data pembayaran ke dalam data booking
+    const bookingsWithPembayaran = bookings.map((booking, index) => ({
+      ...booking.toJSON(),
+      pembayaran: pembayaranResults[index] ? pembayaranResults[index].toJSON() : null,
+    }));
+
+    res.json(bookingsWithPembayaran);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Terjadi kesalahan pada server" });
   }
 };
+
 
 export { getBookingsByOwner };
 

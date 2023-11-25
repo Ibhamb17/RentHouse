@@ -10,10 +10,13 @@ import EditPengaturanAkun from "./pages/EditPengaturanAkun";
 import Pengaturan from "./pages/Pengaturan";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
-import UploadGambar from "./pages/uploadgambar";
+import UploadGambar from "./components/formtambahfoto";
 import PropertyDetail from "./components/kontrakandetails";
 import Booking from "./pages/Booking";
 import EditBooking from "./pages/EditBooking"
+import CustomerSignUpForm from "./pages/Login/customer-signup";
+import OwnerSignUpForm from "./pages/Login/owner-signup";
+import Pembayaran from "./pages/pembayaran";
 
 function App() {
   return (
@@ -23,7 +26,9 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/login/login" element={<Login />} />
-          <Route path="/uploadgambar" element={<UploadGambar />} />
+          <Route path="/signup/customer" element={<CustomerSignUpForm/>}/>
+          <Route path="/signup/owner" element={<OwnerSignUpForm/>}/>
+          <Route path="/uploadgambar/:id" element={<UploadGambar />} />
           <Route path="/users" element={<Users />} />
           <Route path="/users/add" element={<AddUser />} />
           <Route path="/users/edit/:id" element={<EditUser />} />
@@ -37,10 +42,11 @@ function App() {
             element={<EditPengaturanAkun />}
           />
           <Route
-            path="/kontrakan/:kontrakanId"
+            path="/kontrakan/details/:id=:kontrakanId:ownerId"
             element={<PropertyDetail />}
           />
           <Route path="/managebookings" element={<Booking/>} />
+          <Route path="/pembayaran/:id" element={<Pembayaran/>}/>
         </Routes>
         
       </BrowserRouter>

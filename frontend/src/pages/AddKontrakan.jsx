@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import Layout from "./Layout";
+import Layoutkos from "./tambah-kontrakan/Layout-tambah-kontrakan";
 import FormAddKontrakan from "../components/FormAddKontrakan";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -22,9 +22,9 @@ const AddKontrakan = () => {
     }
   }, [isError, user, navigate]);
   return (
-    <Layout>
+    <Layoutkos>
       <FormAddKontrakan />
-    </Layout>
+    </Layoutkos>
   );
 };
 

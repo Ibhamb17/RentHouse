@@ -3,10 +3,17 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import "./hsd.css";
 import Header from "./Header/Header";
+import Swal from 'sweetalert2';
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { getMe } from "../features/authSlice";
 
 const PropertyDetail = () => {
   const { kontrakanId } = useParams();
   const [kontrakan, setKontrakan] = useState(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isError } = useSelector((state) => state.auth);
 
   useEffect(() => {
     const getKontrakanById = async () => {
@@ -23,15 +30,34 @@ const PropertyDetail = () => {
   }, [kontrakanId]);
 
   const handleBooking = async () => {
-    try {
-      const response = await axios.post("http://localhost:5000/bookings", { kontrakanId });
-      console.log(response.data); // Tampilkan respons dari backend jika diperlukan
-      // Tambahkan logika atau tindakan lain yang diinginkan setelah pemesanan berhasil
-    } catch (error) {
-      console.error(error);
-      // Tambahkan penanganan kesalahan jika diperlukan
-    }
+    Swal.fire({
+      title: 'Ajukan Booking',
+      text: 'Apakah Anda yakin ingin mengajukan booking?',
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonText: 'Ajukan',
+      cancelButtonText: 'Batal',
+      showLoaderOnConfirm: true,
+      allowOutsideClick: () => !Swal.isLoading(),
+      preConfirm: async () => {
+        try {
+          const response = await axios.post("http://localhost:5000/bookings", { kontrakanId });
+          console.log(response.data); // Tampilkan respons dari backend jika diperlukan
+          return response.data;
+        } catch (error) {
+          console.error(error);
+          Swal.showValidationMessage('Terjadi kesalahan saat mengajukan booking.');
+        }
+      },
+      allowEscapeKey: false
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire('Booking berhasil diajukan!', 'Terima kasih telah mengajukan booking.', 'success');
+        // Tambahkan logika atau tindakan lain yang diinginkan setelah pemesanan berhasil
+      }
+    });
   };
+  
 
   function formatPhoneNumber(phoneNumber) {
     // Menghapus angka 0 di depan nomor telepon
@@ -52,20 +78,55 @@ const PropertyDetail = () => {
     window.open(whatsappLink, "_blank");
   };
   
-  
-  
+  useEffect(() => {
+    dispatch(getMe());
+  }, [dispatch]);
 
+  useEffect(() => {
+    if (isError) {
+      navigate("/login/login");
+    }
+  }, [isError, navigate]);
+  
+  const getRandomImageUrl = () => {
+    const imageUrls = [
+      "https://drive.google.com/uc?id=12QqOKWrOj4gAlxP3NZBC1KtOMqhCyfkr",
+      "https://drive.google.com/uc?id=1CXQ4fFClHTNjncMee09wXfzIb4ehmLKW",
+      "https://drive.google.com/uc?id=1zpNepAWYup4ZqgCgtfJ-WVIIVV2ne4pj",
+      "https://drive.google.com/uc?id=1EQ7Zbml7OVaVAsEYCySec3Q8A6XblrxJ"
+    ];
+    const randomIndex = Math.floor(Math.random() * imageUrls.length);
+    return imageUrls[randomIndex];
+  };
   return (
     <div className="container">
       <Header className="header" />
       <div className="house-details-container">
-        <div className="pict">
-          <div className="main-pict"></div>
-          <div className="facility-picts-container">
-            <div className="others"></div>
-            <div className="others"></div>
-          </div>
-        </div>
+      <div className="pict">
+    <div className="main-pict" style={{
+                      backgroundImage: `url("${getRandomImageUrl()}")`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                      backgroundRepeat: "no-repeat",
+                    }}>
+    </div>
+    <div className="facility-picts-container">
+      <div className="others" style={{
+                      backgroundImage: `url("https://drive.google.com/uc?id=1aGe6Fxi265bIKGXitTmITIyI6X4dXlKm")`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                      backgroundRepeat: "no-repeat",
+                    }}>
+      </div>
+      <div className="others" style={{
+                      backgroundImage: `url("https://drive.google.com/uc?id=1ClHJv2Ug4sO4rhbMED9fdBLB-ZfV6tdU")`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                      backgroundRepeat: "no-repeat",
+                    }}>
+      </div>
+    </div>
+  </div>
 
         <div className="content-details-container">
           <div className="content-details">
@@ -77,7 +138,7 @@ const PropertyDetail = () => {
                 <h4>Nama Kontrakan: {kontrakan.namaKontrakan}</h4>
                 <p>Alamat Kontrakan: {kontrakan.alamatKontrakan}</p>
                 <p>Keterangan: {kontrakan.keterangan}</p>
-                <p>Price: {kontrakan.price}</p>
+                <p>Price: Rp.{kontrakan.price.toLocaleString()}</p>
               </div>
             )}
           </div>

@@ -1,14 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { LogOut, reset, getMe } from '../../features/authSlice';
 import Swal from 'sweetalert2';
-import './Header.css';
 
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleLogout = () => {
     Swal.fire({
@@ -33,32 +33,52 @@ const Header = () => {
     });
   };
 
+  const handleSignupDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
   useEffect(() => {
     dispatch(getMe());
   }, [dispatch]);
 
   return (
-    <nav className="topbar">
-      <Link to="/">
-        <div className="logo">
-          <div className="logo-text">Rent house</div>
+    <nav className="navbar is-fixed-top" style={{ backgroundColor: 'rgba(48, 104, 246, 1)' }}>
+      <div className="navbar-brand">
+        <Link to="/" className="navbar-item">
+          <div className="has-text-white">Rent house</div>
+        </Link>
+      </div>
+      <div className="navbar-menu">
+        <div className="navbar-end">
+          {!user ? (
+            <div className="navbar-item">
+              <div className="buttons" style={{ display: 'flex', alignItems: 'center' }}>
+                <Link to="/login/login" className="button is-primary">
+                  Login
+                </Link>
+                <div className={`navbar-item has-dropdown ${isDropdownOpen ? 'is-active' : ''}`} style={{ marginLeft: '10px' }}>
+                  <a className="navbar-link" onClick={handleSignupDropdown}>
+                    Signup
+                  </a>
+                  <div className="navbar-dropdown" style={{ backgroundColor: 'rgba(0, 0, 0, 0.09)', color: '#ffffff', left: '-90%', top: 'calc(100% + 5px)' }}>
+                    <Link to="/signup/customer" className="navbar-item">
+                      <span className="signup-item">Sign up as Customer</span>
+                    </Link>
+                    <Link to="/signup/owner" className="navbar-item">
+                      <span className="signup-item">Sign up as Owner</span>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="navbar-item">
+              <button className="button is-primary" onClick={handleLogout}>
+                Logout
+              </button>
+            </div>
+          )}
         </div>
-      </Link>
-      <div className="componen">
-        {!user ? (
-          <>
-            <div className="subcomponen">
-              <Link className="label-text" to="/login/login">Login</Link>
-            </div>
-            <div className="subcomponen">
-              <Link className="label-text" to="/login/login">Signup</Link>
-            </div>
-          </>
-        ) : (
-          <button className="logout-button" onClick={handleLogout}>
-            <span className="label-text">Logout</span>
-          </button>
-        )}
       </div>
     </nav>
   );

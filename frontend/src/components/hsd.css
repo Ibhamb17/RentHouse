@@ -36,7 +36,7 @@
   width: 70%;
   height: 100%;
   border: 1px solid blue;
-  background: blue;
+  /* background: blue; */
   margin: 10px;
 }
 .facility-picts-container {
@@ -51,7 +51,7 @@
 
 .others {
   border: 1px solid green;
-  background: red;
+  /* background: red; */
   width: 100%;
   height: 50%;
   margin: 2px;

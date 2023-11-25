@@ -30,7 +30,7 @@ const Customer = db.define(
     },
     identificationNumber: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
       validate: {
         notEmpty: true,
       },

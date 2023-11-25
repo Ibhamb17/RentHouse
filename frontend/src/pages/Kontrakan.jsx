@@ -4,9 +4,9 @@ import Layout from "./Layout";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getMe } from "../features/authSlice";
-import ManageMateri from "../components/ManageKontrakan";
+import ManageKontrakan from "../components/ManageKontrakan";
 
-const Materi = () => {
+const Kontrakan = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user, isError } = useSelector((state) => state.auth);
@@ -25,9 +25,9 @@ const Materi = () => {
   }, [isError, user, navigate]);
   return (
     <Layout>
-      <ManageMateri />
+      <ManageKontrakan />
     </Layout>
   );
 };
 
-export default Materi;
+export default Kontrakan;

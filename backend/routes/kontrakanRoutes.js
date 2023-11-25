@@ -6,6 +6,7 @@ import {
   createKontrakan,
   updateKontrakan,
   deleteKontrakan,
+  uploadImage,
   getKontrakanByIdForCustomer
 } from "../controllers/Kontrakan.js";
 import { verifyUser, adminOnly, ownerOnly } from "../middleware/AuthUser.js";
@@ -31,5 +32,6 @@ router.patch("/kontrakan", verifyUser,  updateKontrakan);
 router.patch("/kontrakan/:id", verifyUser,  updateKontrakan);
 router.delete("/kontrakan/:id", verifyUser,  deleteKontrakan);
 router.get("/kontrakan/customer/:id", verifyUser, getKontrakanByIdForCustomer);
+router.post('/kontrakan/:id', uploadImage);
 
 export default router;
