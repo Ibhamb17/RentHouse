@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import Layout from "./Layout";
+import Layoutkos from "./Layoutkos";
 import Welcome from "../components/Welcome";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -8,7 +8,7 @@ import { getMe } from "../features/authSlice";
 const Dashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user,isError } = useSelector((state) => state.auth);
+  const { isError } = useSelector((state) => state.auth);
 
   useEffect(() => {
     dispatch(getMe());
@@ -16,17 +16,14 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (isError) {
-      navigate("/");
+      navigate("/managekontrakan");
     }
-    if (user && user.role === "customer") {
-      navigate("/");
-    }
-  }, [isError,user, navigate]);
+  }, [isError, navigate]);
 
   return (
-    <Layout>
-      <Welcome />
-    </Layout>
+    <Layoutkos>
+      
+    </Layoutkos>
   );
 };
 

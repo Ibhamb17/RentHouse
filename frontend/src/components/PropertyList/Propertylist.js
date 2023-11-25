@@ -6,11 +6,10 @@ import "./property.css";
 const Propertylist = () => {
   const [kontrakans, setKontrakans] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [searchRegion, setSearchRegion] = useState("");
-  const [searchCity, setSearchCity] = useState("");
+  const [searchAddress, setSearchAddress] = useState("");
   const [priceFilter, setPriceFilter] = useState("");
+  const [noResults, setNoResults] = useState(false);
 
-  
   useEffect(() => {
     fetchKontrakans();
   }, []);
@@ -19,6 +18,7 @@ const Propertylist = () => {
     try {
       const response = await axios.get("http://localhost:5000/kontrakan");
       setKontrakans(response.data);
+      setNoResults(false);
     } catch (error) {
       console.log(error);
     }
@@ -52,13 +52,68 @@ const Propertylist = () => {
     });
   };
 
-  const handleSearch = () => {
-    // Perform search based on searchRegion, searchCity, and priceFilter
-    // You can implement the logic here to filter the kontrakans array
-    // and update the kontrakans state with the filtered results
+  const handleSearch = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/kontrakan");
+      let filteredKontrakans = response.data;
+
+      if (searchAddress) {
+        filteredKontrakans = filteredKontrakans.filter((kontrakan) =>
+          kontrakan.alamatKontrakan.toLowerCase().includes(searchAddress.toLowerCase())
+        );
+      }
+      
+      if (priceFilter === "all") {
+        filteredKontrakans = filteredKontrakans.filter((kontrakan) => kontrakan.price );
+      }
+      else if (priceFilter === "<600000") {
+        filteredKontrakans = filteredKontrakans.filter((kontrakan) => kontrakan.price <= 600000);
+      } else if (priceFilter === "<1000000") {
+        filteredKontrakans = filteredKontrakans.filter((kontrakan) => kontrakan.price <= 1000000);
+      } else if (priceFilter === "<2000000") {
+        filteredKontrakans = filteredKontrakans.filter((kontrakan) => kontrakan.price <= 2000000);
+      } else if (priceFilter === ">2000000") {
+        filteredKontrakans = filteredKontrakans.filter((kontrakan) => kontrakan.price >= 2000000);
+      }
+
+      if (filteredKontrakans.length === 0) {
+        setNoResults(true);
+      } else {
+        setNoResults(false);
+      }
+
+      setKontrakans(filteredKontrakans);
+      setCurrentIndex(0);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleResetFilter = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/kontrakan");
+      setKontrakans(response.data);
+      setPriceFilter("");
+      setSearchAddress("");
+      setCurrentIndex(0);
+      setNoResults(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const visibleItems = kontrakans.slice(currentIndex, currentIndex + 4);
+
+  const getRandomImageUrl = () => {
+    const imageUrls = [
+      "https://drive.google.com/uc?id=12QqOKWrOj4gAlxP3NZBC1KtOMqhCyfkr",
+      "https://drive.google.com/uc?id=1CXQ4fFClHTNjncMee09wXfzIb4ehmLKW",
+      "https://drive.google.com/uc?id=1zpNepAWYup4ZqgCgtfJ-WVIIVV2ne4pj",
+      "https://drive.google.com/uc?id=1EQ7Zbml7OVaVAsEYCySec3Q8A6XblrxJ"
+    ];
+    const randomIndex = Math.floor(Math.random() * imageUrls.length);
+    return imageUrls[randomIndex];
+  };
 
   return (
     <div className="property-container">
@@ -66,22 +121,14 @@ const Propertylist = () => {
         <div className="input-box">
           <input
             type="text"
-            placeholder="Region"
-            value={searchRegion}
-            onChange={(e) => setSearchRegion(e.target.value)}
-          />
-        </div>
-        <div className="input-box">
-          <input
-            type="text"
-            placeholder="City"
-            value={searchCity}
-            onChange={(e) => setSearchCity(e.target.value)}
+            placeholder="Address"
+            value={searchAddress}
+            onChange={(e) => setSearchAddress(e.target.value)}
           />
         </div>
         <div className="dropdown-category">
           <select value={priceFilter} onChange={(e) => setPriceFilter(e.target.value)}>
-            <option value="">All price</option>
+            <option value="all">All price</option>
             <option value="<600000">Below 600K</option>
             <option value="<1000000">Below 1M</option>
             <option value="<2000000">Below 2M</option>
@@ -92,23 +139,40 @@ const Propertylist = () => {
         <button className="search-button" onClick={handleSearch}>
           <span className="search-button-text">Search</span>
         </button>
+        <button className="reset-filter-button" onClick={handleResetFilter}>
+          Reset Filter
+        </button>
       </div>
       <div className="list-container">
-        <div className="list">
-          {visibleItems.map((kontrakan) => (
-            <div className="div-house" key={kontrakan.id}>
-              <Link to={`/kontrakan/${kontrakan.id}`}>
-                <div className="pict1"></div>
-                <div className="description">
-                  <h3>{kontrakan.namaKontrakan}</h3>
-                  <p>{truncateDescription(kontrakan.alamatKontrakan)}</p>
-                  <p>{truncateDescription(kontrakan.keterangan)}</p>
-                </div>
-                <div className="price">Rp. {kontrakan.price}</div>
-              </Link>
-            </div>
-          ))}
-        </div>
+        {noResults ? (
+          <div className="no-results-message">Kontrakan tidak ditemukan.</div>
+        ) : (
+          <div className="list">
+            {visibleItems.map((kontrakan) => (
+              <div className="div-house" key={kontrakan.id}>
+                <Link
+                  to={`/kontrakan/details/${kontrakan.keterangan.replace(/ /g, "-")}-id=${kontrakan.id}=${kontrakan.ownerId}`}
+                >
+                  <div
+                    className="pict1"
+                    style={{
+                      backgroundImage: `url("${getRandomImageUrl()}")`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                      backgroundRepeat: "no-repeat",
+                    }}
+                  ></div>
+                  <div className="description">
+                    <h3>{kontrakan.namaKontrakan}</h3>
+                    <p>{truncateDescription(kontrakan.alamatKontrakan)}</p>
+                    <p>{truncateDescription(kontrakan.keterangan)}</p>
+                  </div>
+                  <div className="price">Rp. {kontrakan.price.toLocaleString("id-ID")},-</div>
+                </Link>
+              </div>
+            ))}
+          </div>
+        )}
         <div className="slider-controls">
           <button className="button-slide prev-button" onClick={handlePrev}>
             Prev

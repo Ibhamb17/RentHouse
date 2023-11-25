@@ -14,7 +14,7 @@ const ManageKontrakan = () => {
     setKontrakan(response.data);
   };
 
-  const deleteMateri = async (kontrakanId) => {
+  const deleteKontrakan = async (kontrakanId) => {
     await axios.delete(`http://localhost:5000/kontrakan/${kontrakanId}`);
     getKontrakans();
   };
@@ -32,6 +32,7 @@ const ManageKontrakan = () => {
             <th>alamat kontrakan</th>
             <th>keterangan</th>
             <th>avaibility</th>
+            <th>status</th>
             <th>price</th>
             <th>Actions</th>
           </tr>
@@ -45,6 +46,7 @@ const ManageKontrakan = () => {
               <td>{kontrakan.alamatKontrakan}</td>
               <td>{kontrakan.keterangan}</td>
               <td>{kontrakan.availability ? "Tersedia" : "Kontrakan Tidak Tersedia"}</td>
+              <td>{kontrakan.status}</td>
               <td>Rp.{kontrakan.price.toLocaleString()},-</td>
               <td>
                 <Link
@@ -54,7 +56,7 @@ const ManageKontrakan = () => {
                   Edit
                 </Link>
                 <button
-                  onClick={() => deleteMateri(kontrakan.id)}
+                  onClick={() => deleteKontrakan(kontrakan.id)}
                   className="button is-small is-danger"
                 >
                   Delete

@@ -6,15 +6,14 @@ const ManageBooking = () => {
   const [bookings, setBookings] = useState([]);
 
   useEffect(() => {
-    getKontrakans();
+    getBookings();
   }, []);
 
-  const getKontrakans = async () => {
+  const getBookings = async () => {
     const response = await axios.get("http://localhost:5000/bookingsbyowner");
     setBookings(response.data);
   };
 
-  
   return (
     <div>
       <h1 className="title has-text-centered">Booking Request</h1>
@@ -23,14 +22,15 @@ const ManageBooking = () => {
         <thead>
           <tr>
             <th>No</th>
-            <th>id</th>
-            <th>tanggal booking</th>
-            <th>tanggal_checkin</th>
-            <th>tanggal_checkout</th>
-            <th>status_booking</th>
-            <th>kontrakanId</th>
-            <th>customerId</th>
-            <th>action</th>
+            <th>ID</th>
+            <th>Tanggal Booking</th>
+            <th>Tanggal Check-in</th>
+            <th>Tanggal Check-out</th>
+            <th>Status Booking</th>
+            <th>Status Pembayaran</th>
+            <th>Kontrakan ID</th>
+            <th>Customer ID</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -42,6 +42,7 @@ const ManageBooking = () => {
               <td>{booking.tanggal_checkin}</td>
               <td>{booking.tanggal_checkout}</td>
               <td>{booking.status_booking}</td>
+              <td>{booking.pembayaran ? booking.pembayaran.status_pembayaran : "-"}</td> {/* Mengambil status_pembayaran jika ada data pembayaran */}
               <td>{booking.kontrakanId}</td>
               <td>{booking.customerId}</td>
               <td>

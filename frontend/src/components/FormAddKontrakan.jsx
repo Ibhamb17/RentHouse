@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import Swal from "sweetalert2";
 const FormAddKontrakan = () => {
-  const [namaKontrakan, setName] = useState("");
-  const [alamatKontrakan, setAddress] = useState("");
+  const [namaKontrakan, setNamaKontrakan] = useState("");
+  const [alamatKontrakan, setAlamatKontrakan] = useState("");
   const [keterangan, setKeterangan] = useState("");
-
   const [price, setPrice] = useState("");
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
@@ -14,14 +13,24 @@ const FormAddKontrakan = () => {
   const saveKontrakan = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/kontrakan", {
+      await axios.post(`http://localhost:5000/kontrakan`, {
         namaKontrakan: namaKontrakan,
         alamatKontrakan: alamatKontrakan,
         keterangan: keterangan,
-
         price: price,
       });
-      navigate("/managekontrakan");
+      // Tampilkan Sweet Alert setelah berhasil memperbarui
+      Swal.fire({
+        title: "Sukses!",
+        text: "Tampilan data kontrakan diperbarui",
+        icon: "success",
+        confirmButtonText: "Selesai",
+        showCancelButton: true, 
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/managekontrakan");
+        }
+      });
     } catch (error) {
       if (error.response) {
         setMsg(error.response.data.msg);
@@ -29,10 +38,11 @@ const FormAddKontrakan = () => {
     }
   };
 
+
   return (
     <div>
       <h1 className="title">Kontrakan</h1>
-      <h2 className="subtitle">Tambah Konrakan</h2>
+      <h2 className="subtitle">Tambah Kontrakan</h2>
       <div className="card is-shadowless">
         <div className="card-content">
           <div className="content">
@@ -45,20 +55,20 @@ const FormAddKontrakan = () => {
                     type="text"
                     className="input"
                     value={namaKontrakan}
-                    onChange={(e) => setName(e.target.value)}
+                    onChange={(e) => setNamaKontrakan(e.target.value)}
                     placeholder="Nama Kontrakan"
                   />
                 </div>
               </div>
               <div className="field">
-                <label className="label">Adress</label>
+                <label className="label">Address</label>
                 <div className="control">
                   <input
                     type="text"
                     className="input"
                     value={alamatKontrakan}
-                    onChange={(e) => setAddress(e.target.value)}
-                    placeholder="inpurt address"
+                    onChange={(e) => setAlamatKontrakan(e.target.value)}
+                    placeholder="Input address"
                   />
                 </div>
               </div>
@@ -71,22 +81,21 @@ const FormAddKontrakan = () => {
                     className="input"
                     value={keterangan}
                     onChange={(e) => setKeterangan(e.target.value)}
-                    placeholder="input Keterangan"
+                    placeholder="Input Keterangan"
                   />
                 </div>
               </div>
 
-          
 
               <div className="field">
-                <label className="label">price</label>
+                <label className="label">Price</label>
                 <div className="control">
                   <input
                     type="text"
                     className="input"
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
-                    placeholder="inpurt house price"
+                    placeholder="Input house price"
                   />
                 </div>
               </div>

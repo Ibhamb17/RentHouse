@@ -4,9 +4,9 @@ import Customer from "../models/Customer.js";
 import argon2 from "argon2";
 
 export const Login = async (req, res) =>{
-  // if(req.session.userId){
-  //   return res.status(400).json({msg:"Anda sudah login, Lakukan logout terlebih dahulu ^_^"})
-  // }
+  if(req.session.userId){
+    return res.status(400).json({msg:"Anda sudah login, Lakukan logout terlebih dahulu ^_^"})
+  }
     const user = await User.findOne({
         where: {
             email: req.body.email
@@ -49,14 +49,14 @@ export const Me = async (req, res) => {
       return res.status(401).json({ msg: "Mohon login ke akun Anda!" });
     }
     const user = await User.findOne({
-      attributes: ["id", "fullname", "email", "role"], // Mengubah "uuid" menjadi "id"
+      attributes: ["id", "fullName", "email", "role"], // Mengubah "uuid" menjadi "id"
       where: {
         uuid: req.session.userId,
       },
     });
     if (!user) return res.status(404).json({ msg: "User tidak ditemukan" });
   
-    const { id, fullname, email, role } = user; // Menggunakan "id" sebagai pengganti "uuid"
+    const { id, fullName, email, role } = user; // Menggunakan "id" sebagai pengganti "uuid"
     const userId = user.id; // Menyimpan "id" sebagai "userId"
     
   if (role === "owner") {
@@ -66,9 +66,9 @@ export const Me = async (req, res) => {
       ownerId = owner.id;
     }
   
-    res.status(200).json({ id, fullname, email, role, userId,ownerId }); // Mengirimkan "userId" dalam respons
+    res.status(200).json({ id, fullName, email, role, userId,ownerId }); // Mengirimkan "userId" dalam respons
   }else{
-  res.status(200).json({ id, fullname, email, role, userId});}
+  res.status(200).json({ id, fullName, email, role, userId});}
   };
   
 

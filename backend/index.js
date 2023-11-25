@@ -32,9 +32,9 @@ const store = new sessionStore({
     db: db
 });
 
-// (async()=>{
-//     await db.sync();
-// })();
+(async()=>{
+    await db.sync();
+})();
 
 app.use(session({
     secret: "process.env.SESS_SECRET",
@@ -55,11 +55,11 @@ app.use(UserRoute);
 app.use(AuthRoute);
 app.use(CustomerRoute);
 app.use(KontrakanRoute);
+app.use(PropertyRoute);
 app.use(BookingRoute);
 app.use(PembayaranRoute);
-app.use(PropertyRoute);
 app.use(gambarkontrakanRoute);
-store.sync();
+// store.sync();
 
 app.listen(process.env.APP_PORT, ()=> {
     console.log('Server up and running on port '+process.env.APP_PORT);

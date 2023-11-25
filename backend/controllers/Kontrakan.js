@@ -1,6 +1,33 @@
 import Kontrakan from "../models/Kontrakan.js";
 import Owner from "../models/Owner.js";
 import User from "../models/UserModel.js";
+import path from 'path';
+import fs from 'fs';
+
+
+export const uploadImage = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const currentFilePath = import.meta.url; // Mendapatkan path file saat ini
+    const currentDir = path.dirname(new URL(currentFilePath).pathname); // Mendapatkan direktori dari path file saat ini
+    const imagePath = path.join(currentDir, 'tes.jpeg'); // Sesuaikan dengan nama file dan struktur folder Anda
+
+    // Baca file gambar
+    const imageFile = fs.readFileSync(imagePath);
+
+    // Update atribut fotokontrakan dengan file gambar
+    await Kontrakan.update(
+      { fotokontrakan: imageFile },
+      { where: { id } }
+    );
+
+    res.json({ msg: 'Gambar berhasil diupload' });
+  } catch (error) {
+    res.status(400).json({ msg: error.message });
+  }
+};
+
 
 export const getKontrakans = async (req, res) => {
   try {
@@ -88,46 +115,46 @@ export const createKontrakan = async (req, res) => {
   
   
 
-  export const updateKontrakan = async (req, res) => {
-    try {
-      const { id } = req.params;
-      const { namaKontrakan, alamatKontrakan, keterangan, availability, price } = req.body;
-  
-      let kontrakan;
-      if (req.role === "admin") {
-        kontrakan = await Kontrakan.findOne({ where: { id } });
-        if (!kontrakan) {
-          return res.status(404).json({ msg: "Kontrakan tidak ditemukan" });
+    export const updateKontrakan = async (req, res) => {
+      try {
+        const { id } = req.params;
+        const { namaKontrakan, alamatKontrakan, keterangan, availability,fotokontrakan, price,status } = req.body;
+    
+        let kontrakan;
+        if (req.role === "admin") {
+          kontrakan = await Kontrakan.findOne({ where: { id } });
+          if (!kontrakan) {
+            return res.status(404).json({ msg: "Kontrakan tidak ditemukan" });
+          }
+    
+          await Kontrakan.update(
+            { namaKontrakan, alamatKontrakan, keterangan, availability,fotokontrakan, price,status },
+            { where: { id } }
+          );
+        } else {
+          kontrakan = await Kontrakan.findOne({ where: { id } });
+          if (!kontrakan) {
+            return res.status(404).json({ msg: "Kontrakan tidak ditemukan" });
+          }
+          
+          const ownerId = kontrakan.ownerId;
+          if (ownerId !== req.session.ownerId) {
+            return res
+              .status(403)
+              .json({ msg: "Akses ditolak. Anda tidak berhak melihat kontrakan ini" });
+          }
+    
+          await Kontrakan.update(
+            { namaKontrakan, alamatKontrakan, keterangan, fotokontrakan, availability, price },
+            { where: { id, ownerId: req.session.ownerId } }
+          );
         }
-  
-        await Kontrakan.update(
-          { namaKontrakan, alamatKontrakan, keterangan, availability, price },
-          { where: { id } }
-        );
-      } else {
-        kontrakan = await Kontrakan.findOne({ where: { id } });
-        if (!kontrakan) {
-          return res.status(404).json({ msg: "Kontrakan tidak ditemukan" });
-        }
-        
-        const ownerId = kontrakan.ownerId;
-        if (ownerId !== req.session.ownerId) {
-          return res
-            .status(403)
-            .json({ msg: "Akses ditolak. Anda tidak berhak melihat kontrakan ini" });
-        }
-  
-        await Kontrakan.update(
-          { namaKontrakan, alamatKontrakan, keterangan, availability, price },
-          { where: { id, ownerId: req.session.ownerId } }
-        );
+    
+        res.json({ msg: "Kontrakan berhasil diperbarui" });
+      } catch (error) {
+        res.status(400).json({ msg: error.message });
       }
-  
-      res.json({ msg: "Kontrakan berhasil diperbarui" });
-    } catch (error) {
-      res.status(400).json({ msg: error.message });
-    }
-  };
+    };
   
   
 

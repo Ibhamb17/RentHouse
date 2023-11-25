@@ -121,7 +121,7 @@ POST http://localhost:5000/kontrakan
 Content-Type: application/json
 
 {
-  "namaKontrakan": "Kontrakan 3 alip",
+  "namaKontrakan": "Kontrakan 2 alip",
   "alamatKontrakan": "Jl. Contoh No. 123",
   "keterangan": "Kontrakan baru dengan fasilitas lengkap",
   "price": 800000,
@@ -131,6 +131,14 @@ Content-Type: application/json
 //meminta request data
 GET http://localhost:5000/kontrakan
 
+###
+//UPDATE KONTRAKAN
+PATCH   http://localhost:5000/kontrakan/4
+Content-Type: application/json
+
+{
+    "status": "diterima"
+}
 
 ###
 //meminta request data kontrakan berdasarkan ownerId
@@ -142,12 +150,13 @@ GET http://localhost:5000/kontrakanowner
 
 ###
 //UPDATE KONTRAKAN
-PATCH   http://localhost:5000/kontrakan/3
+PATCH   http://localhost:5000/kontrakan/1
 Content-Type: application/json
 
 {
     "namaKontrakan": "Kontrakan 1 Alip",
-    "availability": true
+    "availability": true,
+    "fotokontrakan": "dawdawd"
 }
 ###
 // DELETE KONTRAKAN
@@ -158,12 +167,15 @@ DELETE http://localhost:5000/kontrakan/7
 GET  http://localhost:5000/kontrakan/customer/6
 
 ###
+////
+POST http://localhost:5000/kontrakan/1
+###
 ///login
 POST http://localhost:5000/login
 Content-Type: application/json
 
 {
-    "email": "ibem@gmail.com",
+    "email": "owner3@gmail.com",
     "password": "123456"
 }
 ###
@@ -178,7 +190,7 @@ POST http://localhost:5000/bookings
 Content-Type: application/json
 
 {
-  "kontrakanId": 2
+  "kontrakanId": 1
 }
 ###
 
@@ -188,7 +200,7 @@ POST http://localhost:5000/login
 Content-Type: application/json
 
 {
-    "email": "admin1@gmail.com",
+    "email": "ibem@gmail.com",
     "password": "123456"
 }
 ###
@@ -218,7 +230,7 @@ Content-Type: application/json
 }
 ###
 ///update pembayaran customer
-PATCH  http://localhost:5000/pembayaran/12
+PATCH  http://localhost:5000/pembayaran/6
 Content-Type: application/json
 
 {
@@ -227,7 +239,7 @@ Content-Type: application/json
 }
 ###
 ///update pembayaran owner
-PATCH http://localhost:5000/pembayaranowner/12
+PATCH http://localhost:5000/pembayaranowner/6
 Content-Type: application/json
 
 {

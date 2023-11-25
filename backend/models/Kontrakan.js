@@ -15,14 +15,18 @@ const Kontrakan = db.define(
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notEmpty: true,
+        notEmpty: {
+          msg: "Nama kontrakan tidak boleh kosong",
+        },
       },
     },
     alamatKontrakan: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notEmpty: true,
+        notEmpty: {
+          msg: "Alamat kontrakan tidak boleh kosong",
+        },
       },
     },
     keterangan: {
@@ -32,13 +36,34 @@ const Kontrakan = db.define(
     availability: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-      defaultValue: true,
+      defaultValue: true, 
     },
     price: {
-      type: DataTypes.INTEGER   ,
+      type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
-        notEmpty: true,
+        notEmpty: {
+          msg: "Harga tidak boleh kosong",
+        },
+      },
+    },
+    fotokontrakan: {
+      type: DataTypes.STRING, // Menyimpan data gambar kontrakan
+      allowNull: true,
+    },
+    akhirKontrak: {
+      type: DataTypes.DATEONLY, // Menggunakan DataTypes.DATEONLY jika hanya tanggal yang diperlukan
+      allowNull: true, // Mengizinkan nilai null jika belum ada informasi berakhirnya kontrak
+    },
+    status: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: "diperiksa",
+      validate: {
+        isIn: {
+          args: [["diperiksa", "ditolak", "diterima"]],
+          msg: "Status tidak valid",
+        },
       },
     },
   },
